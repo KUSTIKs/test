@@ -1,1 +1,1 @@
-web: gunicorn --chdir=src Flicky.wsgi:application --log-file -
+web: gunicorn --chdir src Flicky.wsgi --log-file -

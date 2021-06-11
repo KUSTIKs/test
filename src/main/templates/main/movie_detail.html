@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{ movie.title }} {% endblock title %} 
+
+{% block links %}
+  <link rel="stylesheet" href="{% static 'main/css/movie_detail.css' %}" />
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+{% endblock links %} 
+
+{% block content %}
+  <h1 class="movie-title">{{ movie.title }}</h1>
+  <div class="movie-info">
+    <div class="info-block" id="yearAndCountryBlock">
+      <span class="year">{{ movie.year }}</span>
+      <span class="sountry">{{ movie.country }}</span>
+    </div>
+    <div class="info-block" id="genresBlock">
+      {% for genre in movie.genres.all %}
+      <span class="genre">{{ genre }}</span>
+      {% endfor %}
+    </div>
+    <div class="info-block" id="movieDurationBlock">
+      <i class="bx bx-time-five"></i>
+      <span class="movie-duration">{{ movie.duration }}</span>
+    </div>
+  </div>
+  <div class="video-wrapper">
+    <iframe
+      width="100%"
+      height="100%"
+      src="{{ movie.get_trailer_url }}"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </div>
+  {% if user.is_authenticated %}
+    <span data-movie="{{ movie.id }}" data-action="update" class="text-btn"><i class="bx bx-bookmark"></i>Add to saved</span>
+  {% endif %}
+  <section class="section movie-plot">
+    <h2 class="section-title">Plot</h2>
+    <p class="text less-more" id="plot">{{ movie.description }}</p>
+  </section>
+  <section class="section directors-and-actors">
+    <h2 class="section-title">Directors and actors</h2>
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        {% for director in movie.directors.all %}
+
+        <div class="swiper-slide">
+          <div class="slider-card person-card">
+            <div class="image-wrapper">
+              <img
+                src="{{ director.image.url }}"
+                alt="{{ director.name }} photo"
+              />
+            </div>
+            <div class="person-info">
+              <p class="person-name">{{ director.name | truncatechars:13}}</p>
+              <span class="person-role">director</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %} {% for actor in movie.actors.all %}
+        <div class="swiper-slide">
+          <div class="slider-card person-card">
+            <div class="image-wrapper">
+              <img 
+                src="{{ actor.image.url }}" 
+                alt="{{ actor.name }} photo" 
+              />
+            </div>
+            <div class="person-info">
+              <p class="person-name">{{ actor.name | truncatechars:13 }}</p>
+              <span class="person-role">actor</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <section class="section comments" id="comments">
+    <h1 class="section-title">Comments</h1>
+    {% if profile %}
+      <button class="write-comment btn comment-field-toggle">
+        Write a comment
+      </button>
+      <div class="write-comment-wrapper hidden">
+        <div class="comment-field-header">
+          <div class="image-wrapper">
+            <img
+              src="{{ profile.image.url }}"
+              alt="your profile image"
+              class="user-avatar"
+            />
+          </div>
+          <span class="user-username">{{ profile.user.username }}</span>
+          <i class="comment-field-toggle hidden bx bx-x"></i>
+        </div>
+        <form
+          method="post" name="write-comment" id="write-comment"
+          action="{% url 'main:write-comment' movie.id %}"
+          class="comment-field-main"
+        >
+          {% csrf_token %} {{ form.text }} {{ form.captcha }}
+          <button type="submit" class="btn">Send</button>
+        </form>
+      </div>
+    {% endif %}
+    {% if movie.comment_set.all %}
+    <div class="comments-list">
+      {% for comment in movie.comment_set.all|slice:'3' %}
+      <div class="comment-wrapper">
+        <div class="image-wrapper">
+          <img
+            src="{{ comment.profile.image.url }}"
+            alt="{{ comment.profile.user.username }}"
+            class="user-avatar"
+          />
+        </div>
+        <div class="text-part">
+          <span class="user-username">{{ comment.profile.user.username }}</span>
+          <p class="less-more comment-content">{{ comment.text }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <button class="btn" id="load-more">Load more</button>
+    {% endif %}
+  </section>
+{% endblock content %} 
+
+{% block scripts %}
+  <script type="text/javascript">
+    const loadMoreUrl = '{% url "main:load-more" %}';
+    const writeCommentUrl = '{% url "main:write-comment" movie.id %}'
+    const user = '{{ request.user }}'
+    const movieId = '{{ movie.id }}';
+  </script>
+  <script src="{% static 'js/hogan.js' %}"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  {% if user.is_authenticated %}
+    <script src="{% static 'main/js/update_saved.js/' %}"></script>
+  {% endif %}
+  <script src="{% static '/main/js/movie_detail.js' %}"></script>
+{% endblock scripts %}

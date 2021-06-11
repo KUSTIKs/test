@@ -1,0 +1,59 @@
+{% load static %}
+{% load static recaptcha3 %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- ICONS -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static '/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static '/css/elements.css' %}" />
+
+    {% block links %}{% endblock links %}
+    {% recaptcha_init %}
+    {% recaptcha_ready action_name="homepage" %}
+    <link
+      rel="shortcut icon"
+      type="image/jpg"
+      href="{% static 'images/bx-film.svg/' %}"
+    />
+    <title>Flicky: {% block title %}{% endblock title %}</title>
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+    <div class="content-wrapper">
+      {% block header %}
+        {% include 'header.html' %}
+      {% endblock header %}
+      <main class="main">
+        <div class="main-wrapper">
+          {% if messages %}
+            <div class="messages">
+              {% for message in messages %}
+                <p class="message">{{ message }}<i class='bx-fw bx bx-x' style=" color: inherit" onclick="this.parentElement.classList.add('hidden')"></i></p>
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% block content %}{% endblock content %}
+        </div>
+      </main>
+      {% include 'footer.html' %}
+    </div>
+    <script src="{% static '/js/base.js' %}"></script>
+    <script src="{% static '/js/elements.js' %}"></script>
+    {% block scripts %}{% endblock scripts %}
+  </body>
+</html>

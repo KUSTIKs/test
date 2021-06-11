@@ -1,0 +1,37 @@
+<nav class="navbar">
+  <ul class="nav-list">
+    <li class="nav-logo nav-section">
+      <a href="{% url 'main:movie-list' %}" class="logo-link nav-link">
+        <i class="bx bx-film"></i>
+      </a>
+    </li>
+      <li class="nav-item nav-section">
+        <a href="{% url 'main:movie-list' %}" class="nav-link">
+          <i class="bx bx-category"></i>
+        </a>
+      </li>
+    {% if user.is_authenticated %}
+      <li class="nav-item nav-section">
+        <a href="{% url 'main:saved-movie-list' %}" class="nav-link">
+          <i class="bx bx-bookmark-alt"></i>
+        </a>
+      </li>
+      <li class="nav-item nav-section">
+        <a href="{% url 'accounts:settings' %}" class="nav-link">
+          <i class="bx bx-id-card"></i>
+        </a>
+      </li>
+      <li class="nav-exit nav-section">
+        <a href="{% url 'accounts:logout' %}" class="exit-link nav-link">
+          <i class="bx bx-log-out"></i>
+        </a>
+      </li>
+    {% else %}
+      <li class="nav-exit nav-section">
+        <a href="{% url 'accounts:register' %}" class="exit-link nav-link">
+          <i class="bx bx-log-in"></i>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>

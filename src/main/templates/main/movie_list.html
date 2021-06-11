@@ -1,0 +1,95 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% load main_tags %}
+
+{% block title %} main {% endblock title %} 
+
+{% block links %}
+  <link rel="stylesheet" href="{% static 'main/css/movie_list.css' %}" />
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+{% endblock links %} 
+
+{% block content %}
+  <section class="search-section">
+    <form class="input-with-icon" action="{% url 'main:search' %}" method="Get">
+      <input type="text" id="search-bar" value="{{ q }}" placeholder="Search" name="q" class="input" />
+      <i id="search-btn" class="bx bx-search"></i>
+    </form>
+    {% comment %} <button class="btn" id="filter-btn">
+      <i class="bx bx-filter"></i>
+      <span class="btn-name">Filter</span>
+    </button> {% endcomment %}
+  </section>
+  {% if movie_list.all %}
+    <section class="genres-section">
+      <form action="{% url 'main:ajax-filter' %}" name="filter" method="get">
+        <div class="swiper-container">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="genre-card selected">
+                <span class="iconify" data-icon="twemoji:film-frames" data-inline="false"></span>
+                <span class="genre-name">all</span>
+              </div>
+            </div>
+            {% get_genre_list movie_list as genre_list %}
+            {% for genre in genre_list %}
+              <div class="swiper-slide">
+                <div class="genre-card">
+                  <span class="iconify" data-icon="twemoji:{{ genre.icon_name }}" data-inline="false"></span>
+                  <span class="genre-name">{{ genre.name }}</span>
+                </div>
+              </div>
+            {% endfor %}
+            <input type="hidden" id="genre-input" name="genre">
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section class="movie-cards-section">
+      {% for movie in movie_list.all %}
+      <div class="movie-card">
+        <div class="image-wrapper">
+          {% if movie.poster %}
+          <img src="{{ movie.poster.url }}" alt="movie-poster" />
+          {% else %}
+          <img src="{% static 'images/avatar-2.png' %}" alt="movie-poster" />
+          {% endif %}
+        </div>
+        <div class="movie-info">
+          <a href="{{ movie.get_absolute_url }}" class="overlay-link"></a>
+          <div class="text-part">
+            <span class="movie-title">{{ movie.title }}</span>
+            <span class="movie-genres">
+              {% for genre in movie.genres.all %} {{ genre }} {% endfor %}
+            </span>
+          </div>
+          {% if movie in profile.savedmovie.movie.all %}
+            <i data-movie="{{ movie.id }}" data-action="update" class="bx bxs-bookmark-alt update-saved"></i>
+          {% else %}
+            <i data-movie="{{ movie.id }}" data-action="update" class="bx bx-bookmark-alt update-saved"></i>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </section>
+    <section class="pagination-section">
+      {% include 'pagination.html' %}
+    </section>
+  {% else %}
+    <p class="nothing-found" >Nothing found</p>
+  {% endif %}
+{% endblock content %}
+
+{% block scripts %}
+  <script type="text/javascript">
+    const user = '{{ request.user }}';
+  </script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="{% static 'js/hogan.js' %}"></script>
+  <script src="{% static 'main/js/movie_list.js/' %}"></script>
+  {% if user.is_authenticated %}
+    <script src="{% static 'main/js/update_saved.js/' %}"></script>
+  {% endif %}
+{% endblock scripts %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}login{% endblock title %}
+
+{% block links %}
+  <link rel="stylesheet" href="{% static 'accounts/css/accounts.css' %}" />
+{% endblock links %}
+
+{% block header %}{% endblock header %}
+
+{% block content %}
+  <div class="form-wrapper">
+    <form method="POST" action="" class="form" id="accounts-form">
+      {% csrf_token %}
+      <nav class="nav">
+        <ul class="list">
+          <li class="sign-in nav-element">
+            <a href="{% url 'accounts:register' %}" class="nav-link">
+              register
+            </a>
+          </li>
+          <li class="sign-up nav-element active">
+            <a href="" class="nav-link">
+              log in
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="block-wrapper">
+        <div class="input-item">
+            <label for="username">Username</label>
+          <div class="input-with-icon">
+            <i class='bx bx-user-circle' ></i>
+            <input 
+              required autocomplete="username"
+              type="text" id="username"
+              name="username" class="input"
+            />
+          </div>
+        </div>
+        <div class="input-item ">
+          <label for="password">Password</label>
+          <div class="input-with-icon">
+            <i class='bx bx-lock-alt' ></i>
+            <input 
+              required autocomplete="password"
+              type="password" id="password"
+              name="password" class="input"
+            />
+          </div>
+            <a href="{% url 'password_reset' %}">forgot password ?</a>
+        </div>
+      </div>
+      <div class="form-block">
+        <div class="button-wrapper">
+          <button class="btn" type="submit">log in</button>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock content %}

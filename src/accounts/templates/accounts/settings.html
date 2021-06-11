@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}register{% endblock title %}
+
+{% block links %}
+  <link rel="stylesheet" href="{% static 'accounts/css/accounts.css' %}" />
+{% endblock links %}
+
+{% block header %}{% endblock header %}
+
+{% block content %}
+    <div class="form-wrapper">
+      <form method="POST" action="" class="form" enctype="multipart/form-data" id="accounts-form">
+        {% csrf_token %}
+        <div class="input-item">
+          <label for="username">{{ user_form.username.label }}</label>
+          <div class="input-with-icon">
+            <i class='bx bx-user-circle' ></i>
+            {{ user_form.username }}
+          </div>
+          {{ user_form.username.errors }}
+        </div>
+        <div class="input-item">
+          <label for="email">{{ user_form.email.label }}</label>
+          <div class="input-with-icon">
+            <i class="bx bx-envelope" > </i>
+            {{ user_form.email }}
+          </div>
+          {{ user_form.email.errors }}
+        </div>
+        <div class="form-block">
+          <div class="input-item row">
+            <div class="image-wrapper">
+              <img class="image-preview" src="{{ user.profile.image.url }}"
+              alt="cat" />
+            </div>
+            <label for="id_image">upload image</label>
+            <p class="hidden"> {{ profile_form.image }}</p>
+          </div>
+        </div>
+        <div class="form-block">
+          <div class="button-wrapper">
+            <button class="btn" type="submit">update</button>
+          </div>
+        </div>
+      </form>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+  <script src="{% static 'accounts/js/accounts.js' %}"></script>
+{% endblock scripts %}

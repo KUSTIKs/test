@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}register{% endblock title %}
+
+{% block links %}
+  <link rel="stylesheet" href="{% static 'accounts/css/accounts.css' %}" />
+{% endblock links %}
+
+{% block header %}{% endblock header %}
+
+{% block content %}
+    <div class="form-wrapper">
+      <form method="POST" action="" class="form" id="accounts-form">
+        {% csrf_token %}
+        <nav class="nav">
+          <ul class="list">
+            <li class="sign-in nav-element active">
+              <a href="#" class="nav-link">
+                register
+              </a>
+            </li>
+            <li class="sign-up nav-element">
+              <a href="{% url 'accounts:login' %}" class="nav-link">
+                log in
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="block-wrapper">
+          <div class="input-item">
+              <label for="username">{{ form.username.label }}</label>
+            <div class="input-with-icon">
+              <i class='bx bx-user-circle' ></i>
+              {{ form.username }}
+            </div>
+            {{ form.username.errors }}
+          </div>
+          <div class="input-item ">
+            <label for="email">{{ form.email.label }}</label>
+            <div class="input-with-icon">
+              <i class='bx bx-envelope' ></i>
+              {{ form.email }}
+            </div>
+            {{ form.email.errors }}
+          </div>
+          <div class="input-item ">
+            <label for="password1">{{ form.password1.label }}</label>
+            <div class="input-with-icon">
+              <i class='bx bx-lock-alt' ></i>
+              {{ form.password1 }}
+            </div>
+            {{ form.password1.errors }}
+          </div>
+          <div class="input-item">
+            <label for="password2">{{ form.password2.label }}</label>
+            <div class="input-with-icon">
+              <i class='bx bx-lock-alt' ></i>
+              {{ form.password2 }}
+            </div>
+            {{ form.password2.errors }}
+          </div>
+        </div>
+        <div class="form-block">
+          <div class="button-wrapper">
+            <button class="btn" type="submit">register</button>
+          </div>
+        </div>
+      </form> 
+    </div>
+{% endblock content %}

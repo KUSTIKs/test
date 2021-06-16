@@ -5,7 +5,7 @@ from django.conf import settings
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, blank=True, verbose_name="user", on_delete=models.CASCADE)
-    image = models.ImageField(default="/profile/image/avatar-1.png", blank=True, upload_to="profiles/image")
+    image = models.ImageField(default="/", blank=True, upload_to="profiles/image/default-avatar.png")
 
     def __str__(self):
         return str(self.user.get_username())

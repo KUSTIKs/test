@@ -28,6 +28,7 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ["flicky-films.herokuapp.com",
+                "stormy-wave-94553.herokuapp.com",
                  "127.0.0.1"]
 
 

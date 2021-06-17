@@ -180,9 +180,9 @@ AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-AWS_DEFAULT_ACL = 'public-read'
-AWS_LOCATION = 'static'
-USE_S3 = 'TRUE'
+# AWS_DEFAULT_ACL = 'public-read'
+# AWS_LOCATION = 'static'
+# USE_S3 = 'TRUE'
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True

@@ -182,7 +182,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
 # AWS_DEFAULT_ACL = 'public-read'
 # AWS_LOCATION = 'static'
-# USE_S3 = 'TRUE'
+USE_S3 = 'TRUE'
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True

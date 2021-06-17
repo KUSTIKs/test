@@ -1,11 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
-from django.contrib.auth.models import User
-from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.core import serializers
-from django.forms.models import model_to_dict
-from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 import json
 from .models import (
@@ -94,7 +89,6 @@ class ajaxFilterMovieListView(ListView):
             movie_list = Movie.objects.filter(hide=False)
         else:
             movie_list = []
-        print(f"\n\n===========\n\n{self.request.user.profile.savedmovie.all}\n\n==========\n\n")
         for movie in movie_list:
             movie_distionary = {
                 "title": movie.title,
